@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <title>KOXXH</title>
+    <link rel="icon" href="KOXXH.png">
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            const params = new URLSearchParams(window.location.search);
+            const query = params.get('q') ? params.get('q').toLowerCase() : '';
+            
+
+            const data = [
+                { type: 'link', url: 'https://www.aparat.com/hamed_xxh', title: 'koxxh aparat' }, 
+                
+        (function(){
+        const style = document.createElement('style');
+        style.innerHTML = `
+            #results li a {
+                font-size: 18px;
+                color: red;
+                margin: 10px;
+            }
+            #results li img {
+                margin: 10px;
+            }
+        `;
+        document.head.appendChild(style);
+        return [];
+    })(),
+                { type: 'image', url: 'K.gif', title: 'koxxh', description: 'Explanation about the photo' },
+                {type:'image', url: 'KOXXH.png', title: 'koxxh logo'},
+            ];
+            data.forEach(item => {
+
+                if(item.title === 'Search results') {
+                    item.keywords = ["al", "ali", "all"];
+                }
+
+                item.searchText = ((item.title || '') + ' ' + (item.keywords ? item.keywords.join(' ') : '')).toLowerCase();
+            });
+
+            const filteredData = query ? data.filter(item => {
+                return (item.searchText && item.searchText.includes(query)) ||
+                       (item.url && item.url.toLowerCase().includes(query));
+            }) : data;
+            const resultsContainer = document.getElementById('results');
+            const ul = document.createElement('ul');
+            
+
+            if (filteredData.length === 0) {
+                resultsContainer.textContent = "No results found.";
+                return;
+            }
+            
+
+            filteredData.forEach(item => {
+                const li = document.createElement('li');
+                if (item.type === 'link') {
+                    li.innerHTML = `<a href="${item.url}" target="_blank">${item.title}</a>`;
+                } else if (item.type === 'image') {
+                    li.innerHTML = `<img src="${item.url}" alt="${item.title}" style="max-width:200px;">`;
+                } else if (item.type === 'video') {
+                    li.innerHTML = `<video controls width="250">
+                                                        <source src="${item.url}" type="video/mp4">
+                                                        Your browser does not support video playback.
+                                                    </video>`;
+                }
+                ul.appendChild(li);
+            });
+            
+            resultsContainer.appendChild(ul);
+        });
+    </script>
+    <style>
+        body {
+            background-color: black;
+            a, img, video {
+                border: 2px solid red;
+            }
+
+        }
+    </style>
+</head>
+<body>
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+        <input type="text" id="searchInput" placeholder="search for Koxxh..." style="font-size: 16px; padding: 5px; font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;margin-left: 460px;margin-top: 50px;width: 600px;">
+        <script>
+
+            const searchInput = document.getElementById('searchInput');
+            searchInput.value = '';
+
+            let timeout;
+            searchInput.addEventListener('input', function() {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => {
+                    location.href = 'search.html?q=' + encodeURIComponent(searchInput.value);
+                }, 3000);
+            });
+        </script>
+    </div>
+    <h1 style="color: red; font-family: Arial, Helvetica, sans-serif;margin-left: 700px;margin-top: -90px;font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">KOXXH</h1>
+    
+    <img src="kx3.png" alt="KOXXH STUDIO" width="90px" style="margin-top: -10px;margin-left: 1040px ;">
+    <img src="your ads.png" alt="ADS" width="120px" style="position: fixed;margin-top: 20px; margin-left: -70px;">
+    <img src="your ads.png" alt="ADS" width="140px" style="position: fixed;margin-top: 50px; margin-left: -100px;">
+    <img src="your ads.png" alt="ADS" width="160px" style="position: fixed;margin-top: 60px; margin-left: -1px;">
+    <img src="your ads.png" alt="ADS" width="120px" style="position: fixed;margin-top: 100px; margin-left: -20px;">
+    <img src="your ads.png" alt="ADS" width="120px" style="position: fixed;margin-top: 140px; margin-left: -70px;">
+    <div id="results"></div>
+</body>
+</html>
