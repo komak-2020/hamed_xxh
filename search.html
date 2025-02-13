@@ -10,86 +10,14 @@
             const params = new URLSearchParams(window.location.search);
             const query = params.get('q') ? params.get('q').toLowerCase() : '';
             
+            const data = [
+                { type: 'image', url: 'KOXXH.png', title: 'koxxh aparat', description:'APARAT Chanel',imageLink:'https://www.aparat.com/hamed_xxh'},
+                { type: 'image', url: 'kx3.png', title: 'trailer#3 of my own minecraft animation', description:'trailer#3 of my own minecraft animation',imageLink:'https://www.aparat.com/v/knh4i62'},
+                { type: 'image', url: 'kx3.png', title: 'trailer#2 of my own minecraft animation', description:'trailer#2 of my own minecraft animation',imageLink:'https://www.aparat.com/v/hzr04wb'},
+                { type: 'image', url: 'kx3.png', title: 'trailer#1 my own minecraft animation', description:'trailer#1 my own minecraft animation',imageLink:'https://www.aparat.com/v/kwd5p42'},
+            ];
 
-     const data = [
-    { type: 'link', url: 'https://www.aparat.com/hamed_xxh', title: 'koxxh aparat', description: 'Description for koxxh aparat' }, 
-    { type: 'link', url: 'https://www.aparat.com/v/knh4i62', title: 'trailer#3 of my own minecraft animation', description: 'Description for trailer#3' },
-    { type: 'link', url: 'https://www.aparat.com/v/hzr04wb', title: 'trailer#2 of my own minecraft animation', description: 'Description for trailer#2' },
-    { type: 'link', url: 'https://www.aparat.com/v/kwd5p42', title: 'trailer my own minecraft animation', description: 'Description for trailer' },
-    { type: 'image', url: 'K.gif', title: 'koxxh', description: 'Explanation about the photo' },
-    { type: 'image', url: 'KOXXH.png', title: 'koxxh logo', description: 'Explanation about the logo' },
-];
-
-data.forEach(item => {
-    if(item.title === 'Search results') {
-        item.keywords = ["al", "ali", "all"];
-    }
-
-    item.searchText = ((item.title || '') + ' ' + (item.keywords ? item.keywords.join(' ') : '')).toLowerCase();
-});
-
-// Adjust the CSS to style the new structure
-const style = document.createElement('style');
-style.innerHTML = `
-    #results li {
-        display: flex;
-        align-items: center;
-        margin: 10px 0;
-    }
-    #results li img {
-        max-width: 100px;
-        margin-right: 20px;
-    }
-    #results li div {
-        display: flex;
-        flex-direction: column;
-    }
-    #results li a {
-        font-size: 18px;
-        color: red;
-        margin-top: 10px;
-    }
-`;
-document.head.appendChild(style);
-
-const filteredData = query ? data.filter(item => {
-    return (item.searchText && item.searchText.includes(query)) ||
-           (item.url && item.url.toLowerCase().includes(query));
-}) : data;
-const resultsContainer = document.getElementById('results');
-const ul = document.createElement('ul');
-
-if (filteredData.length === 0) {
-    resultsContainer.textContent = "No results found.";
-    return;
-}
-
-filteredData.forEach(item => {
-    const li = document.createElement('li');
-    const details = document.createElement('div');
-    if (item.type === 'link' || item.type === 'image') {
-        const img = document.createElement('img');
-        img.src = item.url;
-        img.alt = item.title;
-        const title = document.createElement('div');
-        title.textContent = item.title;
-        const description = document.createElement('div');
-        description.textContent = item.description;
-        const link = document.createElement('a');
-        link.href = item.url;
-        link.target = '_blank';
-        link.textContent = 'Visit link';
-        details.appendChild(title);
-        details.appendChild(description);
-        details.appendChild(link);
-        li.appendChild(img);
-        li.appendChild(details);
-    }
-    ul.appendChild(li);
-});
-resultsContainer.appendChild(ul);
             data.forEach(item => {
-
                 if(item.title === 'Search results') {
                     item.keywords = ["al", "ali", "all"];
                 }
@@ -101,64 +29,145 @@ resultsContainer.appendChild(ul);
                 return (item.searchText && item.searchText.includes(query)) ||
                        (item.url && item.url.toLowerCase().includes(query));
             }) : data;
+
             const resultsContainer = document.getElementById('results');
             const ul = document.createElement('ul');
-            
 
             if (filteredData.length === 0) {
                 resultsContainer.textContent = "No results found.";
                 return;
             }
-            
 
             filteredData.forEach(item => {
                 const li = document.createElement('li');
                 if (item.type === 'link') {
                     li.innerHTML = `<a href="${item.url}" target="_blank">${item.title}</a>`;
                 } else if (item.type === 'image') {
-                    li.innerHTML = `<img src="${item.url}" alt="${item.title}" style="max-width:200px;">`;
-                } else if (item.type === 'video') {
-                    li.innerHTML = `<video controls width="250">
-                                                        <source src="${item.url}" type="video/mp4">
-                                                        Your browser does not support video playback.
-                                                    </video>`;
+                    li.innerHTML = `
+                        <div style="display: flex; align-items: center; margin-bottom: 20px;">
+                            <img src="${item.url}" alt="${item.title}" style="width: 400px; margin-right: 20px; border: 2px solid red;">
+                            <div>
+                                ${item.description ? `<p>${item.description}</p>` : ''}
+                                <a href="${item.imageLink}" target="_blank" class="link">${item.title}</a>
+                            </div>
+                        </div>
+                    `;
                 }
                 ul.appendChild(li);
             });
-            
+
             resultsContainer.appendChild(ul);
         });
     </script>
     <style>
         body {
             background-color: black;
-            a, img, video {
-                border: 2px solid red;
-            }
-
+            color: red;
+            font-family: Arial, Helvetica, sans-serif;
         }
+
+        a {
+            text-decoration: none;
+            color: red;
+            opacity: 0.7;
+            transition: opacity 0.3s, transform 0.3s;
+        }
+
+        a:hover {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        #results li {
+            margin-bottom: 20px;
+            color: red;
+        }
+
+        #results li img {
+            margin: 10px;
+            border: 2px solid red;
+        }
+
+        p {
+            color: white;
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        #searchInput {
+            font-size: 16px;
+            padding: 5px;
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+            margin-right: 10px;
+            width: 600px;
+        }
+
+        #searchButton {
+            font-size: 16px;
+            padding: 6px 12px;
+            background-color: red;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #searchButton:hover {
+            background-color: darkred;
+        }
+        h2 {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgb(36, 36, 36);
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+            color: red;
+            font-size: 10px;}
     </style>
 </head>
 <body>
-    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
-        <input type="text" id="searchInput" placeholder="search for Koxxh..." style="font-size: 16px; padding: 5px; font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;margin-left: 460px;margin-top: 50px;width: 600px;">
-        <script>
+    <h1 style="color: red; font-family: Arial, Helvetica, sans-serif;margin-left: 700px;margin-top: 0px;font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">KOXXH</h1>
 
-            const searchInput = document.getElementById('searchInput');
-            searchInput.value = '';
-
-            let timeout;
-            searchInput.addEventListener('input', function() {
-                clearTimeout(timeout);
-                timeout = setTimeout(() => {
-                    location.href = 'search.html?q=' + encodeURIComponent(searchInput.value);
-                }, 3000);
-            });
-        </script>
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="search for Koxxh..." style="font-family: 'Times New Roman', Times, serif;">
+        <button id="searchButton" style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;">Search</button>
     </div>
-    <h1 style="color: red; font-family: Arial, Helvetica, sans-serif;margin-left: 700px;margin-top: -90px;font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">KOXXH</h1>
-    
 
     <div id="results"></div>
+
+    <script>
+        const searchInput = document.getElementById('searchInput');
+        const searchButton = document.getElementById('searchButton');
+        
+        searchInput.value = new URLSearchParams(window.location.search).get('q') || '';
+
+        let timeout;
+        searchInput.addEventListener('input', function() {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => {
+                location.href = 'search.html?q=' + encodeURIComponent(searchInput.value);
+            }, 3000);
+        });
+
+        searchButton.addEventListener('click', function() {
+            location.href = 'search.html?q=' + encodeURIComponent(searchInput.value);
+        });
+    </script>
+   <footer>
+    <pre>
+        <h2>
+            Web sit by : komak2020 | hamed_xxh                                                                                                                                                            © 2025 Koxxh. All Rights Reserved.
+        </h2>
+    </pre>
+</footer>
 </body>
 </html>
+
+
+    
