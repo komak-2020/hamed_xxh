@@ -11,29 +11,83 @@
             const query = params.get('q') ? params.get('q').toLowerCase() : '';
             
 
-            const data = [
-                { type: 'link', url: 'https://www.aparat.com/hamed_xxh', title: 'koxxh aparat' }, 
-                { type: 'link', url: 'https://www.aparat.com/v/knh4i62', title: 'trailer#3 of my own minecraft animation' },
-                { type: 'link', url: 'https://www.aparat.com/v/hzr04wb', title: 'trailer#2 of my own minecraft animation' },
-                { type: 'link', url: 'https://www.aparat.com/v/kwd5p42', title: 'trailer my own minecraft animation' },
-        (function(){
-        const style = document.createElement('style');
-        style.innerHTML = `
-            #results li a {
-                font-size: 18px;
-                color: red;
-                margin: 10px;
-            }
-            #results li img {
-                margin: 10px;
-            }
-        `;
-        document.head.appendChild(style);
-        return [];
-    })(),
-                { type: 'image', url: 'K.gif', title: 'koxxh', description: 'Explanation about the photo' },
-                {type:'image', url: 'KOXXH.png', title: 'koxxh logo'},
-            ];
+     const data = [
+    { type: 'link', url: 'https://www.aparat.com/hamed_xxh', title: 'koxxh aparat', description: 'Description for koxxh aparat' }, 
+    { type: 'link', url: 'https://www.aparat.com/v/knh4i62', title: 'trailer#3 of my own minecraft animation', description: 'Description for trailer#3' },
+    { type: 'link', url: 'https://www.aparat.com/v/hzr04wb', title: 'trailer#2 of my own minecraft animation', description: 'Description for trailer#2' },
+    { type: 'link', url: 'https://www.aparat.com/v/kwd5p42', title: 'trailer my own minecraft animation', description: 'Description for trailer' },
+    { type: 'image', url: 'K.gif', title: 'koxxh', description: 'Explanation about the photo' },
+    { type: 'image', url: 'KOXXH.png', title: 'koxxh logo', description: 'Explanation about the logo' },
+];
+
+data.forEach(item => {
+    if(item.title === 'Search results') {
+        item.keywords = ["al", "ali", "all"];
+    }
+
+    item.searchText = ((item.title || '') + ' ' + (item.keywords ? item.keywords.join(' ') : '')).toLowerCase();
+});
+
+// Adjust the CSS to style the new structure
+const style = document.createElement('style');
+style.innerHTML = `
+    #results li {
+        display: flex;
+        align-items: center;
+        margin: 10px 0;
+    }
+    #results li img {
+        max-width: 100px;
+        margin-right: 20px;
+    }
+    #results li div {
+        display: flex;
+        flex-direction: column;
+    }
+    #results li a {
+        font-size: 18px;
+        color: red;
+        margin-top: 10px;
+    }
+`;
+document.head.appendChild(style);
+
+const filteredData = query ? data.filter(item => {
+    return (item.searchText && item.searchText.includes(query)) ||
+           (item.url && item.url.toLowerCase().includes(query));
+}) : data;
+const resultsContainer = document.getElementById('results');
+const ul = document.createElement('ul');
+
+if (filteredData.length === 0) {
+    resultsContainer.textContent = "No results found.";
+    return;
+}
+
+filteredData.forEach(item => {
+    const li = document.createElement('li');
+    const details = document.createElement('div');
+    if (item.type === 'link' || item.type === 'image') {
+        const img = document.createElement('img');
+        img.src = item.url;
+        img.alt = item.title;
+        const title = document.createElement('div');
+        title.textContent = item.title;
+        const description = document.createElement('div');
+        description.textContent = item.description;
+        const link = document.createElement('a');
+        link.href = item.url;
+        link.target = '_blank';
+        link.textContent = 'Visit link';
+        details.appendChild(title);
+        details.appendChild(description);
+        details.appendChild(link);
+        li.appendChild(img);
+        li.appendChild(details);
+    }
+    ul.appendChild(li);
+});
+resultsContainer.appendChild(ul);
             data.forEach(item => {
 
                 if(item.title === 'Search results') {
